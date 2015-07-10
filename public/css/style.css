@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    padding: 10px;
+    color: #262626;
+    font-family: 'Helvetica Neue Light', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif, Arial;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+h1 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-family: 'Helvetica Neue Light', 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif, Arial;
+    font-weight: 300;
+}
+
+a {
+    color: #00B7FF;
+}

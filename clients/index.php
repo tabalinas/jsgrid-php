@@ -2,9 +2,10 @@
 
 include "../models/ClientRepository.php";
 
-$db = new PDO("mysql:host=127.0.0.1;dbname=jsgridsample", "root", "mysql");
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$config = include("../db/config.php");
+$db = new PDO($config["db"], $config["username"], $config["password"]);
 $clients = new ClientRepository($db);
+
 
 switch($_SERVER["REQUEST_METHOD"]) {
     case "GET":
@@ -41,6 +42,7 @@ switch($_SERVER["REQUEST_METHOD"]) {
         $result = $clients->remove(intval($_DELETE["id"]));
         break;
 }
+
 
 header("Content-Type: application/json");
 echo json_encode($result);

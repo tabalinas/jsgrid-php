@@ -10,19 +10,35 @@ class ClientRepository {
         $this->db = $db;
     }
 
+    private function read($row) {
+        $result = new Client();
+        $result->id = $row["id"];
+        $result->name = $row["name"];
+        $result->age = $row["age"];
+        $result->address = $row["address"];
+        $result->married = $row["married"] == 1 ? true : false;
+        return $result;
+    }
+
+    public function getById($id) {
+        $sql = "SELECT * FROM clients WHERE id = :id";
+        $q = $this->db->prepare($sql);
+        $q->bindParam(":id", $id, PDO::PARAM_INT);
+        $q->execute();
+        $rows = $q->fetchAll();
+        return $this->read($rows[0]);
+    }
+
     public function getAll() {
         $result = [];
 
         $sql = "SELECT * FROM clients";
-        $rows = $this->db->query($sql);
+        $q = $this->db->prepare($sql);
+        $q->execute();
+        $rows = $q->fetchAll();
 
         foreach($rows as $row) {
-            $client = new Client();
-            $client->name = $row["name"];
-            $client->age = $row["age"];
-            $client->address = $row["address"];
-            $client->married = $row["married"] == 1 ? true : false;
-            array_push($result, $client);
+            array_push($result, $this->read($row));
         }
 
         return $result;
@@ -36,10 +52,26 @@ class ClientRepository {
         $q->bindParam(":address", $data["address"]);
         $q->bindParam(":married", $data["married"], PDO::PARAM_INT);
         $q->execute();
+        return $this->getById($this->db->lastInsertId());
     }
 
+    public function update($data) {
+        $sql = "UPDATE clients SET name = :name, age = :age, address = :address, married = :married WHERE id = :id";
+        $q = $this->db->prepare($sql);
+        $q->bindParam(":name", $data["name"]);
+        $q->bindParam(":age", $data["age"], PDO::PARAM_INT);
+        $q->bindParam(":address", $data["address"]);
+        $q->bindParam(":married", $data["married"], PDO::PARAM_INT);
+        $q->bindParam(":id", $data["id"], PDO::PARAM_INT);
+        $q->execute();
+    }
 
-
+    public function remove($id) {
+        $sql = "DELETE FROM clients WHERE id = :id";
+        $q = $this->db->prepare($sql);
+        $q->bindParam(":id", $id, PDO::PARAM_INT);
+        $q->execute();
+    }
 
 }
 

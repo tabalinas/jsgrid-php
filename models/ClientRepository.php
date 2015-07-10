@@ -29,18 +29,21 @@ class ClientRepository {
         return $this->read($rows[0]);
     }
 
-    public function getAll() {
-        $result = [];
+    public function getAll($filter) {
+        $name = "%" . $filter["name"] . "%";
+        $address = "%" . $filter["address"] . "%";
 
-        $sql = "SELECT * FROM clients";
+        $sql = "SELECT * FROM clients WHERE name LIKE :name AND address LIKE :address";
         $q = $this->db->prepare($sql);
+        $q->bindParam(":name", $name);
+        $q->bindParam(":address", $address);
         $q->execute();
         $rows = $q->fetchAll();
 
+        $result = [];
         foreach($rows as $row) {
             array_push($result, $this->read($row));
         }
-
         return $result;
     }
 

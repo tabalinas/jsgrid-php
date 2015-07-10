@@ -8,7 +8,10 @@ $clients = new ClientRepository($db);
 
 switch($_SERVER["REQUEST_METHOD"]) {
     case "GET":
-        $result = $clients->getAll();
+        $result = $clients->getAll(array(
+            name => $_GET["name"],
+            address => $_GET["address"]
+        ));
         break;
 
     case "POST":

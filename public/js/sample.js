@@ -46,7 +46,7 @@ $(function() {
             { name: "name", type: "text", width: 150 },
             { name: "age", type: "number", width: 50, filtering: false },
             { name: "address", type: "text", width: 200 },
-            { name: "married", type: "checkbox", title: "Is Married", sorting: false },
+            { name: "married", type: "checkbox", title: "Is Married", sorting: false, filtering: false },
             { type: "control" }
         ]
     });

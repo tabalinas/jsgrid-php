@@ -23,7 +23,7 @@ class CountryRepository {
         $q->execute();
         $rows = $q->fetchAll();
 
-        $result = [];
+        $result = array();
         foreach($rows as $row) {
             array_push($result, $this->read($row));
         }

@@ -17,6 +17,7 @@ class ClientRepository {
         $result->age = $row["age"];
         $result->address = $row["address"];
         $result->married = $row["married"] == 1 ? true : false;
+        $result->country_id = $row["country_id"];
         return $result;
     }
 
@@ -32,11 +33,13 @@ class ClientRepository {
     public function getAll($filter) {
         $name = "%" . $filter["name"] . "%";
         $address = "%" . $filter["address"] . "%";
+        $country_id = $filter["country_id"];
 
-        $sql = "SELECT * FROM clients WHERE name LIKE :name AND address LIKE :address";
+        $sql = "SELECT * FROM clients WHERE name LIKE :name AND address LIKE :address AND (:country_id = 0 OR country_id = :country_id)";
         $q = $this->db->prepare($sql);
         $q->bindParam(":name", $name);
         $q->bindParam(":address", $address);
+        $q->bindParam(":country_id", $country_id);
         $q->execute();
         $rows = $q->fetchAll();
 
@@ -48,23 +51,25 @@ class ClientRepository {
     }
 
     public function insert($data) {
-        $sql = "INSERT INTO clients (name, age, address, married) VALUES (:name, :age, :address, :married)";
+        $sql = "INSERT INTO clients (name, age, address, married, country_id) VALUES (:name, :age, :address, :married, :country_id)";
         $q = $this->db->prepare($sql);
         $q->bindParam(":name", $data["name"]);
         $q->bindParam(":age", $data["age"], PDO::PARAM_INT);
         $q->bindParam(":address", $data["address"]);
         $q->bindParam(":married", $data["married"], PDO::PARAM_INT);
+        $q->bindParam(":country_id", $data["country_id"], PDO::PARAM_INT);
         $q->execute();
         return $this->getById($this->db->lastInsertId());
     }
 
     public function update($data) {
-        $sql = "UPDATE clients SET name = :name, age = :age, address = :address, married = :married WHERE id = :id";
+        $sql = "UPDATE clients SET name = :name, age = :age, address = :address, married = :married, country_id = :country_id WHERE id = :id";
         $q = $this->db->prepare($sql);
         $q->bindParam(":name", $data["name"]);
         $q->bindParam(":age", $data["age"], PDO::PARAM_INT);
         $q->bindParam(":address", $data["address"]);
         $q->bindParam(":married", $data["married"], PDO::PARAM_INT);
+        $q->bindParam(":country_id", $data["country_id"], PDO::PARAM_INT);
         $q->bindParam(":id", $data["id"], PDO::PARAM_INT);
         $q->execute();
     }

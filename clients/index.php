@@ -11,7 +11,8 @@ switch($_SERVER["REQUEST_METHOD"]) {
     case "GET":
         $result = $clients->getAll(array(
             name => $_GET["name"],
-            address => $_GET["address"]
+            address => $_GET["address"],
+            country_id => intval($_GET["country_id"])
         ));
         break;
 
@@ -20,7 +21,8 @@ switch($_SERVER["REQUEST_METHOD"]) {
             name => $_POST["name"],
             age => intval($_POST["age"]),
             address => $_POST["address"],
-            married => $_POST["married"] === "true" ? 1 : 0
+            married => $_POST["married"] === "true" ? 1 : 0,
+            country_id => intval($_POST["country_id"])
         ));
         break;
 
@@ -32,7 +34,8 @@ switch($_SERVER["REQUEST_METHOD"]) {
             name => $_PUT["name"],
             age => intval($_PUT["age"]),
             address => $_PUT["address"],
-            married => $_PUT["married"] === "true" ? 1 : 0
+            married => $_PUT["married"] === "true" ? 1 : 0,
+            country_id => intval($_PUT["country_id"])
         ));
         break;
 

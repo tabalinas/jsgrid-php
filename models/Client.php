@@ -6,6 +6,7 @@ class Client {
     public $address;
     public $age;
     public $married;
+    public $country_id;
 }
 
 ?>
